@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>¿Quieres ser mi novia?</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #f9c5d1, #fbc2eb);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      position: relative;
+      display: none; /* Ocultamos inicialmente la caja de la pregunta */
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      color: #e91e63;
+      font-size: 2.8em;
+      margin-bottom: 20px;
+      font-family: 'Dancing Script', cursive;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .heart {
+      font-size: 5em;
+      color: red;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .buttons {
+      margin-top: 30px;
+      position: relative;
+    }
+
+    button {
+      padding: 15px 25px;
+      font-size: 1.2em;
+      margin: 15px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      position: relative;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .yes {
+      background-color: #ff4081;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .no {
+      background-color: #e0e0e0;
+      color: #333;
+      position: absolute;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    /* Corazones flotantes */
+    .heart-float {
+      position: absolute;
+      font-size: 2.5em;
+      color: #ff4081;
+      animation: float 10s infinite;
+    }
+
+    @keyframes float {
+      0% {
+        top: 100%;
+        opacity: 1;
+      }
+      50% {
+        top: 50%;
+        opacity: 0.8;
+      }
+      100% {
+        top: -10%;
+        opacity: 0;
+      }
+    }
+
+    /* Estilo para el mensaje de introducción */
+    .intro-message {
+      background-color: rgba(255, 255, 255, 0.9);
+      border: 2px solid #ff4081;
+      padding: 30px;
+      width: 80%;
+      max-width: 600px;
+      margin: 20px auto;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      font-size: 1.2em;
+      color: #333;
+      text-align: center;
+      display: block;
+      animation: fadeIn 1s ease-in-out;
+      backdrop-filter: blur(8px);
+    }
+
+    .intro-message p {
+      font-size: 1.4em;
+      line-height: 1.6em;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Estilo para el mensaje de agradecimiento */
+    .message-box {
+      background-color: rgba(255, 255, 255, 0.9);
+      border: 2px solid #ff4081;
+      padding: 30px;
+      width: 80%;
+      max-width: 600px;
+      margin: 20px auto;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      font-size: 1.2em;
+      color: #333;
+      text-align: center;
+      display: none;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .message-box p {
+      font-size: 1.3em;
+      line-height: 1.6em;
+    }
+
+    .message-box .heart {
+      font-size: 2em;
+      color: #ff4081;
+    }
+  </style>
+</head>
+<body>
+  <!-- Música de fondo -->
+  <audio id="backgroundMusic" loop autoplay>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+  <!-- Botón de control de música -->
+  <button onclick="toggleMusic()" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">🎵</button>
+
+  <!-- Mensaje de introducción -->
+  <div class="intro-message" id="introMessage">
+    <p>He estado pensando mucho en esto, y quiero decirte algo que para mí es importante. La verdad es que cada vez que paso tiempo contigo, me doy cuenta de lo increíble que eres. Me encanta la forma en la que eres, cómo haces que los días sean mejores, y cómo me siento cuando estamos juntos.</p>
+    <button onclick="showQuestion()">¡Me encantaría saberlo! ❤️</button>
+  </div>
+
+  <!-- Contenedor de la pregunta -->
+  <div class="container" id="questionContainer">
+    <div class="heart">❤️</div>
+    <h1>¿Quieres ser mi novia?</h1>
+    <div class="buttons">
+      <button class="yes" onclick="handleYes()">Sí 💖</button>
+      <button class="no" id="noBtn">No 😢</button>
+    </div>
+  </div>
+
+  <!-- Mensaje de agradecimiento -->
+  <div class="message-box" id="messageBox">
+    <h2>Gracias por decirme que sí</h2>
+    <p>
+      Gracias por hacerme la persona más feliz desde el momento que coincidimos, que conectamos, no sabes cuan contento he sido por los momentos juntos que hemos pasado y que me gustaría seguir pasando contigo. Se ha convertido en uno de los lugares más seguros que siempre me gustaría estar. 
+    </p>
+    <p>
+      Te quiero mucho ❤❤
+    </p>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const messageBox = document.getElementById("messageBox");
+    const introMessage = document.getElementById("introMessage");
+    const questionContainer = document.getElementById("questionContainer");
+    const backgroundMusic = document.getElementById("backgroundMusic");
+
+    noBtn.addEventListener("mouseover", () => {
+      const container = document.querySelector(".container");
+      const maxX = container.offsetWidth - noBtn.offsetWidth;
+      const maxY = container.offsetHeight - noBtn.offsetHeight;
+
+      const newX = Math.random() * maxX;
+      const newY = Math.random() * maxY;
+
+      noBtn.style.left = `${newX}px`;
+      noBtn.style.top = `${newY}px`;
+    });
+
+    function showQuestion() {
+      introMessage.style.display = "none";  // Ocultamos el mensaje de introducción
+      questionContainer.style.display = "block";  // Mostramos la pregunta
+    }
+
+    function handleYes() {
+      alert('¡Sabía que dirías que sí! 😍');
+      console.log("Respuesta: Sí, ¡es una historia de amor!");
+      addHeart();
+      showMessage();
+    }
+
+    function handleNo() {
+      alert('¡Oh no! Pero seguiré intentándolo... 💔');
+      console.log("Respuesta: No, pero no perderé la esperanza.");
+    }
+
+    function addHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart-float");
+      heart.textContent = "❤️";
+      document.body.appendChild(heart);
+
+      // Animar el corazón flotante
+      setTimeout(() => {
+        heart.remove();
+      }, 10000);  // El corazón desaparece después de 10 segundos
+    }
+
+    function showMessage() {
+      messageBox.style.display = "block";
+    }
+
+    function toggleMusic() {
+      if (backgroundMusic.paused) {
+        backgroundMusic.play();
+      } else {
+        backgroundMusic.pause();
+      }
+    }
+  </script>
+</body>
+</html>
